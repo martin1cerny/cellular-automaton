@@ -293,33 +293,33 @@ Grid.createUI = function(){
 	var config = Model.data.world;
 
 	return EditorHelper()
-			.label("This world is a ")
+			.label("Tento svět je mřížka ")
 			.number(config.size, "width", {
 				integer:true,
 				min:5, max:50,
 				step:1,
 				message:"/grid/reinitialize"
 			})
-			.label(" by ")
+			.label(" × ")
 			.number(config.size, "height", {
 				integer:true,
 				min:5, max:50,
 				step:1,
 				message:"/grid/reinitialize"
 			})
-			.label(" grid.")
+			.label(" políček.")
 			.label("<br><br>")
-			.label("We start with this ratio of things:<br>")
+			.label("Začínáme s tímto poměrem věcí:<br>")
 			.proportions()
 			.label("<br>")
-			.label("And each thing considers ")
+			.label("A každá věc považuje za své sousedy ")
 			.selector([
-				{ name:"the 4 spots to its sides", value:Grid.NEIGHBORHOOD_NEUMANN },
-				{ name:"the 8 spots to its sides & corners", value:Grid.NEIGHBORHOOD_MOORE }
+				{ name:"4 místa po stranách", value:Grid.NEIGHBORHOOD_NEUMANN },
+				{ name:"8 míst po stranách a v rozích", value:Grid.NEIGHBORHOOD_MOORE }
 			],config,"neighborhood",{
 				maxWidth: "none"
 			})
-			.label(" to be its neighboring spots.")
+			.label(".")
 			.dom;
 
 };

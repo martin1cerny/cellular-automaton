@@ -291,7 +291,7 @@ THE PLAY CONTROLS
     color: #888;
 }
 #play_controls{
-	width: 445px;
+	width: 495px;
 	height: 40px;
 	margin: 0 auto;
 	overflow: hidden;
@@ -343,10 +343,10 @@ THE PLAY CONTROLS
 	margin: 0 5px;
 }
 #play_controls > #play_reset{
-	width:50px;
+	width:65px;
 }
 #play_controls > #play_pause{
-	width:50px;
+	width:55px;
 }
 #play_controls > #play_pause[paused=true]{
 	background: #333;
@@ -356,10 +356,10 @@ THE PLAY CONTROLS
 	background: #444;
 }
 #play_controls > #play_step{
-	width:40px;
+	width:45px;
 }
 #play_controls > #play_draw{
-	width:80px;
+	width:95px;
 }
 #play_controls > #play_draw > div{
 	float: right;
@@ -373,7 +373,7 @@ THE PLAY CONTROLS
     margin-left: 5px;
 }
 #play_controls[basic]{
-	width: 275px;
+	width: 315px;
 }
 #play_controls[basic] > div.control_speed{
 	display: none;

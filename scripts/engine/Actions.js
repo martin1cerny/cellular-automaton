@@ -31,17 +31,17 @@ exports.PerformActions = function(agent, actionConfigs){
 // GO_TO_STATE: Simply go to that state
 Actions.go_to_state = {
 	
-	name: "Turn into...",
+	name: "Změnit se na...",
 
 	props: {stateID:0},
-	
+
 	step: function(agent,config){
 		agent.nextStateID = config.stateID;
 	},
 
 	ui: function(config){
 		return EditorHelper()
-				.label("Turn into ")
+				.label("Změnit se na ")
 				.stateSelector(config, "stateID")
 				.dom;
 	}
@@ -51,7 +51,7 @@ Actions.go_to_state = {
 // IF_NEIGHBOR: If more/less/equal X neighbors are a certain state, do a thing
 Actions.if_neighbor = {
 	
-	name: "If certain number of certain neighbors...",
+	name: "Když je určitý počet určitých sousedů...",
 
 	props: {
 		sign: ">=",
@@ -95,13 +95,13 @@ Actions.if_neighbor = {
 	ui: function(config){
 
 		return EditorHelper()
-				.label("If ")
+				.label("Když je ")
 				.selector([
-					{ name:"less than (<)", value:"<" },
-					{ name:"up to (≤)", value:"<=" },
-					{ name:"more than (>)", value:">" },
-					{ name:"at least (≥)", value:">=" },
-					{ name:"exactly (=)", value:"=" }
+					{ name:"méně než (<)", value:"<" },
+					{ name:"nejvýše (≤)", value:"<=" },
+					{ name:"více než (>)", value:">" },
+					{ name:"alespoň (≥)", value:">=" },
+					{ name:"přesně (=)", value:"=" }
 				],config,"sign")
 				.label(" ")
 				.number(config, "num", {
@@ -109,7 +109,7 @@ Actions.if_neighbor = {
 					min:0, max:8,
 					step:1
 				})
-				.label(" neighbors are ")
+				.label(" sousedů typu ")
 				.stateSelector(config, "stateID")
 				.actionsUI(config.actions)
 				.dom;
@@ -121,7 +121,7 @@ Actions.if_neighbor = {
 // IF_RANDOM: With a X% chance, do a thing
 Actions.if_random = {
 	
-	name: "With a X% chance...",
+	name: "S pravděpodobností X %...",
 
 	props: {
 		probability: 0.01,
@@ -140,13 +140,13 @@ Actions.if_random = {
 	ui: function(config){
 
 		return EditorHelper()
-				.label("With a ")
+				.label("S ")
 				.number(config, "probability", {
 					multiplier:100,
 					min:0, max:100,
 					step:0.1
 				})
-				.label("% chance,")
+				.label(" % pravděpodobností,")
 				.actionsUI(config.actions)
 				.dom;
 
@@ -157,7 +157,7 @@ Actions.if_random = {
 // MOVE_TO: Move to a (nearby|global) (state) spot in and leave behind (state) 
 Actions.move_to = {
 	
-	name: "Move to...",
+	name: "Přesunout se na...",
 
 	props: {
 		space: 0,
@@ -199,13 +199,14 @@ Actions.move_to = {
 	ui: function(config){
 
 		return EditorHelper()
-				.label("Move to ")
+				.label("Přesunout se na ")
 				.selector([
-					{ name:"a neighboring", value:0 },
-					{ name:"any", value:1 }
+					{ name:"sousední", value:0 },
+					{ name:"jakékoli", value:1 }
 				],config,"space")
+				.label(" místo typu ")
 				.stateSelector(config, "spotStateID")
-				.label(" spot & leave behind ")
+				.label(" a zanechat za sebou ")
 				.stateSelector(config, "leaveStateID")
 				.dom;
 

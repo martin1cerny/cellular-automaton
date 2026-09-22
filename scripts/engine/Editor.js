@@ -26,7 +26,7 @@ Editor.create = function(){
 	///// STATES DOM /////
 	//////////////////////
 
-	var title = Editor.createTitle("<span>THINGS</span> WITH RULES");
+	var title = Editor.createTitle("<span>VĚCI</span> S PRAVIDLY");
 	Editor.dom.appendChild(title);
 
 	Editor.statesDOM = document.createElement("div");
@@ -36,7 +36,7 @@ Editor.create = function(){
 	// Button - Add a state!
 	var addState = document.createElement("div");
 	addState.className = "editor_fancy_button";
-	addState.innerHTML = "<span>+</span>make new thing";
+	addState.innerHTML = "<span>+</span>vytvořit novou věc";
 	addState.onclick = function(){
 
 		// New state config
@@ -44,8 +44,8 @@ Editor.create = function(){
 		var newStateConfig = {
 			id: Model.generateNewID(),
 			icon: emoji.icon,
-			name: "[new thing]",
-			description: "Click icon & paste in new emoji:\nMac: press control+command+space\nOther: copy from Emojipedia.org",
+			name: "[nová věc]",
+			description: "Klikni na ikonu a vlož nové emoji:\nMac: stiskni control+command+space\nOstatní: zkopíruj z Emojipedia.org",
 			actions: []
 		};
 
@@ -71,7 +71,7 @@ Editor.create = function(){
 	///// WORLD DOM /////
 	/////////////////////
 
-	var title = Editor.createTitle("THE <span>WORLD</span>");
+	var title = Editor.createTitle("<span>SVĚT</span>");
 	Editor.dom.appendChild(title);
 
 	Editor.worldDOM = document.createElement("div");
@@ -94,7 +94,7 @@ Editor.create = function(){
 	var undoChanges = document.createElement("div");
 	undoChanges.className = "editor_fancy_button";
 	undoChanges.style.marginBottom = "20px";
-	undoChanges.innerHTML = "<span style='font-size:25px; line-height:40px;'>⟳</span>undo all changes";
+	undoChanges.innerHTML = "<span style='font-size:25px; line-height:40px;'>⟳</span>vrátit všechny změny";
 	undoChanges.onclick = function(){
 		publish("/meta/reset");
 		Model.returnToBackup();
@@ -111,9 +111,9 @@ Editor.create = function(){
 		var saveChanges = document.createElement("div");
 		saveChanges.className = "editor_fancy_button";
 		saveChanges.id = "save_changes";
-		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>save your model";
+		saveChanges.innerHTML = "<span style='font-size:30px; line-height:40px'>★</span>ulož svůj model";
 		saveChanges.onclick = function(){
-			saveLabel.innerHTML = "saving...";
+			saveLabel.innerHTML = "ukládám...";
 			embedLabel.innerHTML = "...";
 			saveLink.value = "...";
 			embedLink.value = "...";
@@ -124,7 +124,7 @@ Editor.create = function(){
 		// Save your changes, label & link, label & embed
 		
 		// save label
-		var saveLabel = Editor.createLabel("when you save your model, you'll get a link here:")
+		var saveLabel = Editor.createLabel("až uložíš svůj model, objeví se tu odkaz:")
 		saveLabel.style.display = "block";
 		saveLabel.style.margin = "10px 0";
 		Editor.dom.appendChild(saveLabel);
@@ -140,7 +140,7 @@ Editor.create = function(){
 		Editor.dom.appendChild(saveLink);
 
 		// embed label 
-		var embedLabel = Editor.createLabel("and an embed code here:")
+		var embedLabel = Editor.createLabel("a tady kód pro vložení na web:")
 		embedLabel.style.display = "block";
 		embedLabel.style.margin = "10px 0";
 		Editor.dom.appendChild(embedLabel);
@@ -163,10 +163,10 @@ Editor.create = function(){
 		// on save success
 		subscribe("/save/success",function(link){
 
-			saveLabel.innerHTML = "here you go! <a href='"+link+"' target='_blank'>(open in new tab)</a> (shrink link with <a href='https://tinyurl.com/' target='_blank'>TinyURL</a>)";
+			saveLabel.innerHTML = "a je to! <a href='"+link+"' target='_blank'>(otevřít v nové záložce)</a> (odkaz zkrátíš pomocí <a href='https://tinyurl.com/' target='_blank'>TinyURL</a>)";
 			saveLink.value = link;
 			saveLink.select();
-			embedLabel.innerHTML = "to embed it, paste this code in your site:";
+			embedLabel.innerHTML = "pro vložení na web zkopíruj tento kód na svou stránku:";
 
 			var width = 800;
 			var height = Math.round(width/(document.body.clientWidth/document.body.clientHeight));
@@ -178,7 +178,7 @@ Editor.create = function(){
 		var exportModel = document.createElement("div");
 		exportModel.className = "editor_fancy_button";
 		exportModel.id = "save_changes";
-		exportModel.innerHTML = "<span style='font-size:25px; line-height:35px; font-family:monospace'>{}</span>export model";
+		exportModel.innerHTML = "<span style='font-size:25px; line-height:35px; font-family:monospace'>{}</span>exportovat model";
 		exportModel.onclick = function(){
 			window.open("data:text/json;charset=utf-8,"+JSON.stringify(Model.data));
 		};
@@ -186,11 +186,11 @@ Editor.create = function(){
 
 		// export label 
 		var exportLabel = Editor.createLabel(
-			"This is for those of you who want to save your sim to your own computertron! "+
-			"<a href='https://github.com/ncase/sim#how-to-run-this-on-your-own-computertron' target='_blank'>[How To Do That]</a> "+
-			"Click the above button to open your sim's data in a new tab. "+
-			"Save it as <span style='font-family:monospace'>[your sim name].json</span>. "+
-			"(Remember the \".json\"! It's important!)"
+			"Tohle je pro ty z vás, kdo si chtějí uložit svoji simulaci na vlastní počítač! "+
+			"<a href='https://github.com/ncase/sim#how-to-run-this-on-your-own-computertron' target='_blank'>[Jak na to]</a> "+
+			"Klikni na tlačítko výše a data tvojí simulace se otevřou v nové záložce. "+
+			"Ulož je jako <span style='font-family:monospace'>[název tvojí simulace].json</span>. "+
+			"(Nezapomeň na \".json\"! Je to důležité!)"
 		);
 		exportLabel.style.display = "block";
 		exportLabel.style.margin = "10px 0";
@@ -198,10 +198,10 @@ Editor.create = function(){
 
 		// CREDITS
 		var creditsLabel = Editor.createLabel(`
-			Made by <a href='https://ncase.me/' target='_blank'>Nicky Case</a>,
-			with the 💖 of their supporters
-			<a href='https://www.patreon.com/ncase' target='_blank'>on Patreon</a>~
-			p.s: <a href='https://github.com/ncase/sim' target='_blank'>open source!</a>
+			Původně vytvořil <a href='https://ncase.me/' target='_blank'>Nicky Case</a>,
+			s 💖 od jejich podporovatelů
+			<a href='https://www.patreon.com/ncase' target='_blank'>na Patreonu</a>~
+			p.s.: <a href='https://github.com/ncase/sim' target='_blank'>open source!</a>
 		`);
 		creditsLabel.style.display = "block";
 		creditsLabel.style.margin = "30px 0";
@@ -409,7 +409,7 @@ Editor.createActionAdder = function(actionConfigs, dom){
 
 	// Default: nothing. just a label.
 	keyValues.push({
-		name: "+new",
+		name: "+nové",
 		value:""
 	});
 
@@ -448,7 +448,7 @@ Editor.createActionAdder = function(actionConfigs, dom){
 	var selectContainer = document.createElement("div");
 	selectContainer.className ="editor_new_action";
 	var button = document.createElement("div");
-	button.innerHTML = "+new";
+	button.innerHTML = "+nové";
 	selectContainer.appendChild(button);
 	selectContainer.appendChild(select);
 
