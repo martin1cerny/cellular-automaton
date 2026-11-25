@@ -78,7 +78,8 @@ THE EDITOR
 #editor .editor_title span{
 	font-weight: bold;
 }
-#editor textarea{
+#editor textarea,
+#editor .editor_textarea_display{
 
 	font-family: 'OpenSansEmoji', Helvetica, Arial, sans-serif;
     font-weight: 100;
@@ -97,10 +98,27 @@ THE EDITOR
     background: #ccc;
     padding: 10px;
 }
-#editor .editor_state > textarea{
+/* Rendered (click-to-edit) description */
+#editor .editor_textarea_display{
+	cursor: text;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	min-height: 1.2em;
+}
+#editor .editor_textarea_display a{
+	color: #2b78b5;
+	text-decoration: underline;
+	word-break: break-all;
+}
+#editor .editor_textarea_display .editor_textarea_empty{
+	color: #999;
+}
+#editor .editor_state .editor_textarea{
 	background: #ccc;
 	color: #666;
 	padding: 10px;
+}
+#editor .editor_state .editor_textarea_wrap{
 	margin: 10px 0;
 }
 #editor input[type=text], #editor input[type=number]{

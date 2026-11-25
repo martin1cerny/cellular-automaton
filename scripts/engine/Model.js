@@ -54,8 +54,7 @@ as well as serialize & deserialize.
 		Grid.reinitialize();
 
 		// Back to original description
-		Editor.descriptionDOM.value = Model.data.meta.description;
-		Editor.descriptionDOM.oninput();
+		if(Editor.descriptionDOM._sync) Editor.descriptionDOM._sync();
 
 		// Remove & recreate all the states
 		Editor.statesDOM.innerHTML = "";

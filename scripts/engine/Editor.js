@@ -220,29 +220,107 @@ Editor.createTitle = function(html){
 	return dom;
 };
 
+// Render a tiny Markdown subset: **bold**, *italic*, and clickable links.
+// Text is HTML-escaped first, so stored descriptions can never inject markup.
+Editor.renderMarkdown = function(text){
+
+	var html = (text || "")
+		.replace(/&/g,"&amp;")
+		.replace(/</g,"&lt;")
+		.replace(/>/g,"&gt;");
+
+	// Links: http(s):// up to whitespace (don't swallow trailing punctuation)
+	html = html.replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g,
+		'<a href="$1" target="_blank" rel="noopener">$1</a>');
+
+	// **bold** first, so the ** isn't eaten by the single-* italic rule.
+	// The marker must hug the text (no space just inside the stars), so a
+	// line that starts with "* " stays a literal bullet, not emphasis.
+	html = html.replace(/\*\*([^\s*][^*]*?[^\s*]|[^\s*])\*\*/g, '<strong>$1</strong>');
+
+	// *italic* (same hug-the-text rule)
+	html = html.replace(/\*([^\s*][^*\n]*?[^\s*]|[^\s*])\*/g, '<em>$1</em>');
+
+	return html;
+
+};
+
 Editor.createTextArea = function(config, propName, options){
 
 	options = options || {};
+	var fontSize = (options.fontSize || 16)+"px";
 
-	// Input
+	// Wrapper holds a rendered display + the raw-text editor behind it
+	var wrap = document.createElement("div");
+	wrap.className = "editor_textarea_wrap";
+
+	// Display: formatted text; click it to edit
+	var display = document.createElement("div");
+	display.className = "editor_textarea editor_textarea_display";
+	display.style.fontSize = fontSize;
+	wrap.appendChild(display);
+
+	// Input: the raw markdown, shown only while editing
 	var input = document.createElement("textarea");
-	input.value = config[propName];
-	input.className ="editor_textarea";
-	input.style.fontSize = (options.fontSize || 16)+"px";
+	input.className = "editor_textarea";
+	input.style.fontSize = fontSize;
+	input.style.display = "none";
+	wrap.appendChild(input);
+
+	// Paint the display from the model
+	var _render = function(){
+		var val = config[propName];
+		if(val && val.length>0){
+			display.innerHTML = Editor.renderMarkdown(val);
+		}else{
+			display.innerHTML = "<span class='editor_textarea_empty'>…</span>";
+		}
+	};
+
+	// Switch display -> editor (but let clicks on links through)
+	var _edit = function(){
+		input.value = config[propName];
+		display.style.display = "none";
+		input.style.display = "block";
+		_resize();
+		input.focus();
+	};
+
+	// Switch editor -> display
+	var _done = function(){
+		config[propName] = input.value;
+		_render();
+		input.style.display = "none";
+		display.style.display = "block";
+	};
+
+	display.addEventListener("mousedown",function(e){
+		if(e.target.tagName=="A") return; // click links normally
+		e.preventDefault();
+		_edit();
+	});
 
 	// Update on change
 	input.oninput = function(){
 		config[propName] = input.value;
 		_resize();
 	};
+	input.onblur = _done;
 
 	// Resize
 	var _resize = function(){
 		input.style.height = "1px";
     	input.style.height = (input.scrollHeight)+"px";
 	};
-	var _listener1 = subscribe("ui/resize",_resize);
-	setTimeout(_resize,1);
+	var _listener1 = subscribe("ui/resize",function(){
+		if(input.style.display!="none") _resize();
+	});
+
+	// First paint
+	_render();
+
+	// Let others force a re-render (e.g. after an undo/reset)
+	wrap._sync = _render;
 
 	// KILL IT ALL
 	var _listener2 = subscribe("/meta/reset",function(){
@@ -250,7 +328,7 @@ Editor.createTextArea = function(config, propName, options){
 		unsubscribe(_listener2);
 	});
 
-	return input;
+	return wrap;
 
 };
 
