@@ -180,7 +180,16 @@ Editor.create = function(){
 		exportModel.id = "save_changes";
 		exportModel.innerHTML = "<span style='font-size:25px; line-height:35px; font-family:monospace'>{}</span>exportovat model";
 		exportModel.onclick = function(){
-			window.open("data:text/json;charset=utf-8,"+JSON.stringify(Model.data));
+			var data = JSON.stringify(Model.data);
+			var blob = new Blob([data], {type:"application/json;charset=utf-8"});
+			var url = URL.createObjectURL(blob);
+			var a = document.createElement("a");
+			a.href = url;
+			a.download = "model.json";
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
 		};
 		Editor.dom.appendChild(exportModel);
 
@@ -188,8 +197,8 @@ Editor.create = function(){
 		var exportLabel = Editor.createLabel(
 			"Tohle je pro ty z vás, kdo si chtějí uložit svoji simulaci na vlastní počítač! "+
 			"<a href='https://github.com/ncase/sim#how-to-run-this-on-your-own-computertron' target='_blank'>[Jak na to]</a> "+
-			"Klikni na tlačítko výše a data tvojí simulace se otevřou v nové záložce. "+
-			"Ulož je jako <span style='font-family:monospace'>[název tvojí simulace].json</span>. "+
+			"Klikni na tlačítko výše a stáhne se soubor <span style='font-family:monospace'>model.json</span> s daty tvojí simulace. "+
+			"Přejmenuj ho na <span style='font-family:monospace'>[název tvojí simulace].json</span>. "+
 			"(Nezapomeň na \".json\"! Je to důležité!)"
 		);
 		exportLabel.style.display = "block";
