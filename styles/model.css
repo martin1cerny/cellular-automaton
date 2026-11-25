@@ -113,6 +113,14 @@ THE EDITOR
 #editor .editor_textarea_display .editor_textarea_empty{
 	color: #999;
 }
+/* Absolute weight/style: the box inherits font-weight:100, so the browser
+   default <strong> "bolder" would only resolve to 400 (not bold). */
+#editor .editor_textarea_display strong{
+	font-weight: bold;
+}
+#editor .editor_textarea_display em{
+	font-style: italic;
+}
 #editor .editor_state .editor_textarea{
 	background: #ccc;
 	color: #666;
